@@ -4,8 +4,11 @@ How to install:
   2. Download this folder and put it in the data/ folder of your autokey
      installation. (Mine is ~/.config/autokey/data, yours might be something
      different).
-  3. Run the script generator.py.  A number of files will be created, with
-     names like "a1.py" and ".e4.json".
+  3. Run the script generator.py.  Two files will be created for each pairing
+     of a Toaq root and a Toaq tone, one of the form toaq1.py, the other of the
+     form .toaq1.json.
+  4. Restart Autokey.  It will take a few seconds to boot up, due to the number
+     of abbreviations that have been created.
 
 Usage:
     While Autokey is running, type a Toaq root followed by a digit 1-7.  The
@@ -13,7 +16,7 @@ Usage:
     appropriate position.
 
 Example:
-    Typing "toaq4" will result in "".
+    Typing "toaq4" will result in "tỏaq".
 
 Note:
     This will only work in environments where CTRL-V results in a paste action
