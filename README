@@ -1,0 +1,5 @@
+Download this folder and put it in the data/ folder of your autokey installation.  (Mine is ~/.config/autokey/data, yours might be something different.)  You will probably need to restart autokey for the abbreviations to take effect.
+
+Usage: While Autokey is running, type a vowel [aeiou] followed by a digit [1-7] and the Toaq tone marking corresponding to that digit will appear over the vowel.
+
+Example: Typing "da4q" will result in "dảq".
