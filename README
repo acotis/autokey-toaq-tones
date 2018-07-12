@@ -1,7 +1,22 @@
-Download this folder and put it in the data/ folder of your autokey installation.  (Mine is ~/.config/autokey/data, yours might be something different.)  You will probably need to restart autokey for the abbreviations to take effect.
 
-Usage: While Autokey is running, type a vowel [aeiou] followed by a digit [1-7] and the Toaq tone marking corresponding to that digit will appear over the vowel.
+How to install:
+  1. Install Autokey.
+  2. Download this folder and put it in the data/ folder of your autokey
+     installation. (Mine is ~/.config/autokey/data, yours might be something
+     different).
+  3. Run the script generator.py.  A number of files will be created, with
+     names like "a1.py" and ".e4.json".
 
-Example: Typing "da4q" will result in "dảq".
+Usage:
+    While Autokey is running, type a vowel [aeiou] followed by a digit [1-7]
+    and the diacritic mark corresponding to that Toaq tone will appear over
+    the vowel.
 
-Note: Autokey is dumb; a separate script is required for each vowel/tone pairing.  The files toaq_script_template.py and toaq_script_generator.py were used to produce these scripts programmatically.
+Example:
+    Typing "da4q" will result in "dảq".
+
+Note:
+    This will only work in environments where CTRL-V results in a paste action
+    occurring (the script works by putting the unicode character onto the
+    system clipboard and sending CTRL-V to paste it, then restoring the
+    clipboard's previous contents).
