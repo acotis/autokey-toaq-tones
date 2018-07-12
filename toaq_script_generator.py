@@ -11,24 +11,37 @@ diacritics = {
     '7': chr(0x303), # Creaky rising tone (diacritical tilde)
 }
 
-# Function to create a single vowel-script (number should be passed as a string)
-def create_file(path, vowel, number):
-    out_file = open(path + vowel + number + ".py", "w+")  # Create file
+# Create the script for a given vowel and tone
+# (tone number should be passed as a string)
+def create_script_file(path, vowel, number):
+    template = open(path + "toaq_script_template.txt", "r")  # Open template    
+    out_file = open(path + vowel + number + ".py", "w+")     # Create file
 
-    for line in template:                                 # Copy template
+    for line in template:                                    # Copy template
         out_file.write(line.rstrip() + '\n') 
         
-    out_file.write("paste_character(\'")                  # Copy operational line
-    out_file.write(vowel + diacritics[number])            # Character to output
+    out_file.write("paste_character(\'")                     # Copy operational line
+    out_file.write(vowel + diacritics[number])               # Character to output
     out_file.write("\')")
+
+    out_file.close()                                         # Close file
+    template.close()                                         # Close template
+
+# Create the json abbreviation file for a given vowel and tone
+# (tone number should be passed as a string)
+def create_json_file(path, vowel, number):
+    template = open(path + "toaq_hotkey_template.txt")       # Open template
+    out_file = open(path + "."+vowel+number+".json", "w+")   # Create file
+
+    for line in template:                                    # Copy template
+        line = line.replace("-", vowel + number)             # (Fill in paramaters)
+        out_file.write(line)
+
+    out_file.close()                                         # Close file
+    template.close()                                         # Close template
     
-    out_file.close()                                      # Close file
-
-
 # Create abbreviation files
 for vowel in ['a', 'e', 'i', 'o', 'u']:
     for tone in range(1, 8):
-        template = open("./toaq_script_template.py", "r")
-        create_file("./", vowel, str(tone)) # Ugly hard-code hack, but okay
-        template.close()
-
+        create_script_file("./", vowel, str(tone))
+        create_json_file("./", vowel, str(tone))

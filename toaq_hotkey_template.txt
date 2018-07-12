@@ -2,11 +2,11 @@
     "usageCount": 0, 
     "omitTrigger": false, 
     "prompt": false, 
-    "description": "o7", 
+    "description": "-", 
     "abbreviation": {
         "wordChars": "[\\w]", 
         "abbreviations": [
-            "o7"
+            "-"
         ], 
         "immediate": true, 
         "ignoreCase": true, 
