@@ -13,15 +13,16 @@ diacritics = {
 
 # Create the script for a given ending and tone
 # (tone number should be passed as a string)
-def create_script_file(path, ending, number):
+def create_script_file(path, consonant, ending, tone):
+    out_file = open(path+consonant+ending+tone+".py","w+")   # Create file
     template = open(path + "script_template.txt", "r")       # Open template    
-    out_file = open(path + ending + number + ".py", "w+")    # Create file
 
     for line in template:                                    # Copy template
         out_file.write(line.rstrip() + '\n') 
         
     out_file.write("paste_character(\'")                     # Copy operational line
-    out_file.write(ending[0]+diacritics[number]+ending[1:])  # Character to output
+    out_file.write(consonant)                                # (Consonant)
+    out_file.write(ending[0]+diacritics[tone] + ending[1:])  # (Ending with diacritic)
     out_file.write("\')")
 
     out_file.close()                                         # Close file
@@ -29,25 +30,41 @@ def create_script_file(path, ending, number):
 
 # Create the json abbreviation file for a given ending and tone
 # (tone number should be passed as a string)
-def create_json_file(path, ending, number):
+def create_json_file(path, consonant, ending, tone):
+    abbrev = consonant + ending + tone
+    out_file = open(path+"." + abbrev + ".json", "w+")       # Create file
     template = open(path + "abbreviation_template.txt")      # Open template
-    out_file = open(path + "."+ending+number+".json", "w+")  # Create file
 
     for line in template:                                    # Copy template
-        line = line.replace("-", ending + number)            # (Fill in paramaters)
+        line = line.replace("-", abbrev)                     # (Fill in paramaters)
         out_file.write(line)
 
     out_file.close()                                         # Close file
     template.close()                                         # Close template
 
-# Create abbreviation files from endings list and template files
+# Compile a list of all consonants and all endings
+
+consonants_file = open("./consonants.txt", "r")
+consonants = []
+for line in consonants_file:
+    con = line.strip()
+    consonants.append(con)
+    consonants.append(con[0].upper() + con[1:])
+consonants_file.close()
+#consonants = [''] # (Comment out this line to generate all roots)
 
 endings_file = open("./endings.txt", "r")
-
-for ending in endings_file:
-    ending = ending.strip()
-    for tone in range(1, 8):
-        create_script_file("./", ending, str(tone))
-        create_json_file("./", ending, str(tone))
-
+endings = []
+for line in endings_file:
+    end = line.strip()
+    endings.append(end)
 endings_file.close()
+
+# Create a script file and an abbreviation file for each Toaq root
+
+for consonant in consonants:
+    for ending in endings:
+        print(consonant + ending)
+        for tone in range(1, 8):
+            create_script_file("./", consonant, ending, str(tone))
+            create_json_file("./", consonant, ending, str(tone))

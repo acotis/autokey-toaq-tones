@@ -9,7 +9,7 @@
             "-"
         ], 
         "immediate": true, 
-        "ignoreCase": true, 
+        "ignoreCase": false, 
         "backspace": true, 
         "triggerInside": true
     }, 
