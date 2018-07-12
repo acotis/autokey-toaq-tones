@@ -8,12 +8,12 @@ How to install:
      names like "a1.py" and ".e4.json".
 
 Usage:
-    While Autokey is running, type a vowel [aeiou] followed by a digit [1-7]
-    and the diacritic mark corresponding to that Toaq tone will appear over
-    the vowel.
+    While Autokey is running, type a Toaq root followed by a digit 1-7.  The
+    diacritic corresponding to that tone will appear over the root in the
+    appropriate position.
 
 Example:
-    Typing "da4q" will result in "dảq".
+    Typing "toaq4" will result in "".
 
 Note:
     This will only work in environments where CTRL-V results in a paste action

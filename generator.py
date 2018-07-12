@@ -11,37 +11,43 @@ diacritics = {
     '7': chr(0x303), # Creaky rising tone (diacritical tilde)
 }
 
-# Create the script for a given vowel and tone
+# Create the script for a given ending and tone
 # (tone number should be passed as a string)
-def create_script_file(path, vowel, number):
+def create_script_file(path, ending, number):
     template = open(path + "script_template.txt", "r")       # Open template    
-    out_file = open(path + vowel + number + ".py", "w+")     # Create file
+    out_file = open(path + ending + number + ".py", "w+")    # Create file
 
     for line in template:                                    # Copy template
         out_file.write(line.rstrip() + '\n') 
         
     out_file.write("paste_character(\'")                     # Copy operational line
-    out_file.write(vowel + diacritics[number])               # Character to output
+    out_file.write(ending[0]+diacritics[number]+ending[1:])  # Character to output
     out_file.write("\')")
 
     out_file.close()                                         # Close file
     template.close()                                         # Close template
 
-# Create the json abbreviation file for a given vowel and tone
+# Create the json abbreviation file for a given ending and tone
 # (tone number should be passed as a string)
-def create_json_file(path, vowel, number):
+def create_json_file(path, ending, number):
     template = open(path + "abbreviation_template.txt")      # Open template
-    out_file = open(path + "."+vowel+number+".json", "w+")   # Create file
+    out_file = open(path + "."+ending+number+".json", "w+")  # Create file
 
     for line in template:                                    # Copy template
-        line = line.replace("-", vowel + number)             # (Fill in paramaters)
+        line = line.replace("-", ending + number)            # (Fill in paramaters)
         out_file.write(line)
 
     out_file.close()                                         # Close file
     template.close()                                         # Close template
-    
-# Create abbreviation files
-for vowel in ['a', 'e', 'i', 'o', 'u']:
+
+# Create abbreviation files from endings list and template files
+
+endings_file = open("./endings.txt", "r")
+
+for ending in endings_file:
+    ending = ending.strip()
     for tone in range(1, 8):
-        create_script_file("./", vowel, str(tone))
-        create_json_file("./", vowel, str(tone))
+        create_script_file("./", ending, str(tone))
+        create_json_file("./", ending, str(tone))
+
+endings_file.close()
