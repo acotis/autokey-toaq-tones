@@ -14,7 +14,7 @@ diacritics = {
 # Create the script for a given vowel and tone
 # (tone number should be passed as a string)
 def create_script_file(path, vowel, number):
-    template = open(path + "toaq_script_template.txt", "r")  # Open template    
+    template = open(path + "script_template.txt", "r")       # Open template    
     out_file = open(path + vowel + number + ".py", "w+")     # Create file
 
     for line in template:                                    # Copy template
@@ -30,7 +30,7 @@ def create_script_file(path, vowel, number):
 # Create the json abbreviation file for a given vowel and tone
 # (tone number should be passed as a string)
 def create_json_file(path, vowel, number):
-    template = open(path + "toaq_hotkey_template.txt")       # Open template
+    template = open(path + "abbreviation_template.txt")      # Open template
     out_file = open(path + "."+vowel+number+".json", "w+")   # Create file
 
     for line in template:                                    # Copy template
