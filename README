@@ -3,3 +3,5 @@ Download this folder and put it in the data/ folder of your autokey installation
 Usage: While Autokey is running, type a vowel [aeiou] followed by a digit [1-7] and the Toaq tone marking corresponding to that digit will appear over the vowel.
 
 Example: Typing "da4q" will result in "dảq".
+
+Note: Autokey is dumb; a separate script is required for each vowel/tone pairing.  The files toaq_script_template.py and toaq_script_generator.py were used to produce these scripts programmatically.
