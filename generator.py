@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 # Associate numbers with their combining diacritics (the 8th tone has no diacritic)
 diacritics = {
