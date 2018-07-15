@@ -23,6 +23,7 @@ io
 ioq
 ie
 ieq
+iu
 o
 oq
 oa
@@ -36,3 +37,4 @@ eaq
 ei
 eo
 eoq
+eu
