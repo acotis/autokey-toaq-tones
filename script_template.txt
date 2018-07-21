@@ -27,7 +27,7 @@ def paste_character(symbol):
     
     c.communicate(symbol.encode('utf-8')) # (Copied code)                                                                                                                
     keyboard.send_keys('<ctrl>+v') # (Copied code)
-    time.sleep(10)
+    time.sleep(.01)
     
     setClipboardData(data) # Replace clipboard data
     

@@ -11,6 +11,7 @@ uao
 ui
 uo
 uoq
+uoi
 ue
 ueq
 i
@@ -28,6 +29,7 @@ o
 oq
 oa
 oaq
+oai
 oi
 oe
 e
