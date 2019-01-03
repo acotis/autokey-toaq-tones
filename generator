@@ -1,14 +1,22 @@
 #!/usr/bin/env python3
 
+
+# IDEAS I HAVE ALREADY HAD 
+#
+#   1. I can't use just endings instead of whole words because
+#      then typing "toaq4" yields "toảq" instead of "tỏaq".
+#
+#   2. I can't use full letter-with-diacritic unicode characters
+#      in place of combining diacritics because then it would
+#      not work with capital letters.
+
 # Associate numbers with their combining diacritics (the 8th tone has no diacritic)
 diacritics = {
-    '1': chr(0x304), # High tone (macron)
-    '2': chr(0x301), # Rising tone (acute)
-    '3': chr(0x30C), # Falling-rising tone (caron)
-    '4': chr(0x309), # Falling tone (diacritical hook)
-    '5': chr(0x302), # Rising-falling tone (cirxumflex)
-    '6': chr(0x300), # Low tone (grave accent)
-    '7': chr(0x303), # Creaky rising tone (diacritical tilde)
+    'a': ".āáǎảâàãa",
+    'e': ".ēéěẻêèẽe",
+    'i': ".īíǐỉîìĩi",
+    'o': ".ōóǒỏôòõo",
+    'u': ".ūúǔủûùũu",
 }
 
 # Create the script for a given ending and tone
@@ -19,11 +27,13 @@ def create_script_file(path, consonant, ending, tone):
 
     for line in template:                                    # Copy template
         out_file.write(line.rstrip() + '\n') 
+
+    markings = diacritics[ending[0]]
+    marked_vowel = markings[int(tone)]
+    marked_ending = marked_vowel + ending[1:]
+    word = consonant + marked_ending
         
-    out_file.write("paste_character(\'")                     # Copy operational line
-    out_file.write(consonant)                                # (Consonant)
-    out_file.write(ending[0]+diacritics[tone] + ending[1:])  # (Ending with diacritic)
-    out_file.write("\')")
+    out_file.write("paste_character(\'" + word + "\')")      # Copy operational line
 
     out_file.close()                                         # Close file
     template.close()                                         # Close template
@@ -51,7 +61,7 @@ for line in consonants_file:
     consonants.append(con)
     consonants.append(con[0].upper() + con[1:])
 consonants_file.close()
-#consonants = [''] # (Comment out this line to generate all roots)
+#consonants = [''] # (Comment this line to generate all roots)
 
 endings_file = open("./endings.txt", "r")
 endings = []
@@ -60,11 +70,11 @@ for line in endings_file:
     endings.append(end)
 endings_file.close()
 
-# Create a script file and an abbreviation file for each Toaq root
+# Create a script file and an abbrev file for each Toaq root
 
 for consonant in consonants:
     for ending in endings:
         print(consonant + ending)
         for tone in range(1, 8):
-            create_script_file("./", consonant, ending, str(tone))
+            create_script_file("./", consonant, ending,str(tone))
             create_json_file("./", consonant, ending, str(tone))
