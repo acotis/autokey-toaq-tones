@@ -32,8 +32,10 @@ def create_script_file(path, consonant, ending, tone):
     marked_vowel = markings[int(tone)]
     marked_ending = marked_vowel + ending[1:]
     word = consonant + marked_ending
-    word = word.replace("i", "ı") # Good Toaq dotless-i's
-        
+
+    word = word.replace("i", "ı")                            # Dotless ı and ȷ
+    word = word.replace("j", "ȷ") 
+    
     out_file.write("paste_character(\'" + word + "\')")      # Copy operational line
 
     out_file.close()                                         # Close file
