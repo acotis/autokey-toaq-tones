@@ -14,7 +14,7 @@
 diacritics = {
     'a': ".āáǎảâàãa",
     'e': ".ēéěẻêèẽe",
-    'i': ".īíǐỉîìĩi",
+    'i': ".īíǐỉîìĩı",
     'o': ".ōóǒỏôòõo",
     'u': ".ūúǔủûùũu",
 }
@@ -28,10 +28,11 @@ def create_script_file(path, consonant, ending, tone):
     for line in template:                                    # Copy template
         out_file.write(line.rstrip() + '\n') 
 
-    markings = diacritics[ending[0]]
+    markings = diacritics[ending[0]]                         # Build printable word
     marked_vowel = markings[int(tone)]
     marked_ending = marked_vowel + ending[1:]
     word = consonant + marked_ending
+    word = word.replace("i", "ı") # Good Toaq dotless-i's
         
     out_file.write("paste_character(\'" + word + "\')")      # Copy operational line
 
@@ -75,6 +76,6 @@ endings_file.close()
 for consonant in consonants:
     for ending in endings:
         print(consonant + ending)
-        for tone in range(1, 8):
+        for tone in range(1, 9): # 8th tone to make dotless-i
             create_script_file("./", consonant, ending,str(tone))
             create_json_file("./", consonant, ending, str(tone))
