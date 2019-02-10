@@ -20,51 +20,67 @@ diacritics = {
     'i': ".īíǐỉîìĩı",
     'o': ".ōóǒỏôòõo",
     'u': ".ūúǔủûùũu",
+    'm': ".m̄ḿm̌m̉m̂m̀m̃m", # (The 'm' and 'M' lines only use
+    'M': ".M̄ḾM̌M̉M̂M̀M̃M", #  decomposed characters)
 }
 
 dotless_i = True  # Options configurable through commandline args
 dotless_j = True
 
-# Create the script for a given ending and tone
-# (tone number should be passed as a string)
 
-def create_script_file(path, consonant, ending, tone):
-    out_file = open(path+consonant+ending+tone+".py","w+")   # Create file
-    template = open(path + "script_template.txt", "r")       # Open template    
+# Create the trigger text and formatted output
+# for a given word on a given tone
 
-    for line in template:                                    # Copy template
-        out_file.write(line.rstrip() + '\n') 
+def create_trigger_name(consonant, ending, tone):
+    return consonant + ending + str(tone)
 
-    markings = diacritics[ending[0]]                         # Build printable word
-    marked_vowel = markings[int(tone)]
-    marked_ending = marked_vowel + ending[1:]
-    word = consonant + marked_ending
+def create_marked_word(consonant, ending, tone):
+    markings = diacritics[ending[0]]           # Get all marked vowels
+    marked_vowel = markings[int(tone)]         # Choose correct marking
+    marked_ending = marked_vowel + ending[1:]  # Build marked ending
+    word = consonant + marked_ending           # Add onset
 
-    if dotless_i:                                            # Dotless ı and ȷ
+    if dotless_i:                              # Dotless ı and ȷ
         word = word.replace("i", "ı")
     if dotless_j:
         word = word.replace("j", "ȷ") 
-    
-    out_file.write("paste_character(\'" + word + "\')")      # Copy operational line
 
-    out_file.close()                                         # Close file
-    template.close()                                         # Close template
+    return word
 
-# Create the json abbreviation file for a given ending and tone
-# (tone number should be passed as a string)
+# Create from a template an AutoKey script with
+# a given shortcut and output
 
-def create_json_file(path, consonant, ending, tone):
-    abbrev = consonant + ending + tone
-    out_file = open(path+"." + abbrev + ".json", "w+")       # Create file
-    template = open(path + "abbreviation_template.txt")      # Open template
+def create_script_file(path, trigger, output):
+    out_file = open(trigger + ".py","w+")
+    template = open(path + "script_template.txt", "r")
 
-    for line in template:                                    # Copy template
-        line = line.replace("-", abbrev)                     # (Fill in paramaters)
+    for line in template:
+        out_file.write(line.rstrip() + '\n')
+
+    out_file.write("paste_character(\'" + output + "\')")
+
+    out_file.close()
+    template.close()
+
+# Create the json file to link a given trigger
+# to its program
+
+def create_json_file(path, trigger):
+    out_file = open(path+"." + trigger + ".json", "w+")
+    template = open(path + "abbreviation_template.txt")
+
+    for line in template:
+        line = line.replace("-", trigger)
         out_file.write(line)
 
-    out_file.close()                                         # Close file
-    template.close()                                         # Close template
+    out_file.close()
+    template.close()
 
+# Create a trigger and corresponding AutoKey link
+
+def create_and_link(path, trigger, output):
+    create_script_file(path, trigger, output)
+    create_json_file(path, trigger)
 
 
 # Deal with command-line arguments
@@ -88,8 +104,13 @@ for opt, arg in opts:
         print("usage: generator [-i] [-j] [-h]")
         sys.exit(2)
 
+# Print chosen options
+
+print("Dotless-i: " + ("on" if dotless_i else "off"))
+print("Dotless-j: " + ("on" if dotless_j else "off"))
+
         
-# Compile a list of all consonants and all endings
+# Read in consonants from the consonant file
 
 consonants_file = open("./consonants.txt", "r")
 consonants = []
@@ -99,6 +120,8 @@ for line in consonants_file:
     consonants.append(con[0].upper() + con[1:])
 consonants_file.close()
 
+# Read in endings from the ending file
+
 endings_file = open("./endings.txt", "r")
 endings = []
 for line in endings_file:
@@ -106,11 +129,25 @@ for line in endings_file:
     endings.append(end)
 endings_file.close()
 
-# Create a script file and an abbrev file for each Toaq root
+# Create and link a trigger for each Toaq word on each tone
 
 for consonant in consonants:
     for ending in endings:
-        print(consonant + ending)
         for tone in range(1, 9): # 8th tone to make dotless-i
-            create_script_file("./", consonant, ending,str(tone))
-            create_json_file("./", consonant, ending, str(tone))
+            trigger = create_trigger_name(consonant, ending,tone)
+            output = create_marked_word(consonant, ending, tone)
+            create_and_link("./", trigger, output)
+
+# Create and link a trigger for the tonal m's
+# (Stored in non-o
+
+for tone in range(1, 9):
+    mtone = diacritics['m'][2*tone - 1 : 2*tone + 1]
+    Mtone = diacritics['M'][2*tone - 1 : 2*tone + 1]
+    create_and_link("./", "m" + str(tone), mtone)
+    create_and_link("./", "M" + str(tone), Mtone)
+            
+# Create and link a trigger for the angle-bracket quotations
+
+create_and_link("./", "<<", "«")
+create_and_link("./", ">>", "»")
